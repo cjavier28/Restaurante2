@@ -372,6 +372,10 @@ public class Restaurante extends javax.swing.JFrame {
 
     private void jCrearReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCrearReservaActionPerformed
         jModificarReserva.setEnabled(false);
+        jCancelarReserva.setEnabled(false);
+        jGuardarReserva.setEnabled(true);
+        jCrearReserva.setEnabled(false);
+
         List<Reserva> lstReserva = new ArrayList<>();
         lstReserva = obj.getSharedVariable();
         Date fecha= jDateChooser1.getDate();
@@ -389,6 +393,19 @@ public class Restaurante extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jCrearReservaActionPerformed
 
+    private void LimpiarFormulario(){
+         jcodigoreserva.setText("");
+        jtxtNombreCliente.setText("");
+        jtxtNumeroContactoCliente.setText("");
+        jtxtNumeroDocumentoCliente1.setText("");
+        jtxtCorreoCliente.setText("");
+        jComboBox1.setSelectedItem("");
+        jComboBox1.setSelectedIndex(0);
+        jtxtCantidadPersonas.setText("");
+        LocalDate fechaActual = LocalDate.now();
+        jDateChooser1.setDate(java.sql.Date.valueOf(fechaActual));
+    }
+    
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         JComboBox<String> comboBox = (JComboBox<String>) evt.getSource();
         String valorSeleccionado = (String) comboBox.getSelectedItem();
@@ -396,6 +413,11 @@ public class Restaurante extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jGuardarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGuardarReservaActionPerformed
+        jModificarReserva.setEnabled(false);
+        jCancelarReserva.setEnabled(false);
+        jGuardarReserva.setEnabled(false);
+        jCrearReserva.setEnabled(true);
+                
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 
         // Convertir la fecha a un String
@@ -417,12 +439,18 @@ public class Restaurante extends javax.swing.JFrame {
         List<Reserva> lstReserva = new ArrayList<>();
         lstReserva = obj.getSharedVariable();
         Llenartabla(lstReserva);
+        jCrearReserva.setEnabled(true);
+         LimpiarFormulario();
     }//GEN-LAST:event_jGuardarReservaActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
           // Obtener la fila en la que se hizo clic
     int rowIndex = jTable1.getSelectedRow();
     
+     jModificarReserva.setEnabled(true);
+     jCancelarReserva.setEnabled(true);
+     jGuardarReserva.setEnabled(true);
+        
     // Verificar si se seleccionó una fila válida
     if (rowIndex != -1) {
         // Obtener los valores de todas las celdas en la fila seleccionada
@@ -447,7 +475,7 @@ public class Restaurante extends javax.swing.JFrame {
     
     
     private void jModificarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jModificarReservaActionPerformed
-            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         
         // Convertir la fecha a un String
         String fechaString = formato.format(jDateChooser1.getDate());
@@ -469,6 +497,7 @@ public class Restaurante extends javax.swing.JFrame {
          List<Reserva> lstReserva = new ArrayList<>();
          lstReserva = obj.getSharedVariable();
          Llenartabla(lstReserva);
+         LimpiarFormulario();
     }//GEN-LAST:event_jModificarReservaActionPerformed
 
     private void jtxtNombreClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtNombreClienteActionPerformed
