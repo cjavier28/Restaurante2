@@ -371,7 +371,28 @@ public class Restaurante extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jCancelarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCancelarReservaActionPerformed
-        // TODO add your handling code here:
+       
+       if(jcodigoreserva.getText()==""){
+               JOptionPane.showMessageDialog(null, "Debe seleccionar una reserva");
+       }else{
+        Reserva reserva = new Reserva();
+        reserva.setCodigo(Integer.parseInt(jcodigoreserva.getText()));        // TODO add your handling code here:
+        boolean respuesta = servicio.actualizarReservaEstado(reserva);
+         obj.setSharedVariable(servicio.ObtenerRegistrosRestaurante());
+        List<Reserva> lstReserva = new ArrayList<>();
+        lstReserva = obj.getSharedVariable();
+        if(respuesta){
+            JOptionPane.showMessageDialog(null, "Reserva cancelada de manera exitosa");
+             Llenartabla(lstReserva);
+             LimpiarFormulario();
+        }else{
+            JOptionPane.showMessageDialog(null, "Ha ocurrido un error");
+             Llenartabla(lstReserva);
+             LimpiarFormulario();
+        }
+
+       }
+        
     }//GEN-LAST:event_jCancelarReservaActionPerformed
 
     private void jbuttonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbuttonLimpiarActionPerformed
@@ -566,6 +587,8 @@ public class Restaurante extends javax.swing.JFrame {
 
     }
 
+    
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

@@ -23,7 +23,8 @@ public class ServicioConsulta {
     private static final String SELECT_RESTAURANT = "SELECT codigo, numero_documento_cliente, nombre_cliente, numero_contacto_cliente, correo_cliente, fecha_reserva, estado_reserva, cantidad_personas FROM reservas ";
     private static final String INSERT_RESTAURANT = "INSERT INTO reservas (numero_documento_cliente, nombre_cliente, numero_contacto_cliente, correo_cliente, fecha_reserva, estado_reserva, cantidad_personas) VALUES (?, ?, ?, ?, ?, ?, ?); ";  
     private static final String UPDATE_RESERVA = "UPDATE reservas SET numero_documento_cliente = ?, nombre_cliente = ?, numero_contacto_cliente = ?, correo_cliente = ?, fecha_reserva = ?, estado_reserva = ?, cantidad_personas = ? WHERE codigo = ?";
-       
+    private static final String UPDATE_RESERVA_ESTADO = "UPDATE reservas SET estado_reserva = 'Cancelada' WHERE codigo = ?";
+   
        
    public List<Reserva> ObtenerRegistrosRestaurante() {
         ConexionBaseDatos con = new ConexionBaseDatos();
@@ -111,7 +112,29 @@ public class ServicioConsulta {
             }
         }
      
-     
+     public boolean actualizarReservaEstado(Reserva reserva) {
+            ConexionBaseDatos con = new ConexionBaseDatos();
+            boolean actualizacionExitosa = false;
+
+            try (Connection connection = con.getConnection();
+                 PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_RESERVA_ESTADO)) {
+
+                // Establecer los valores de los parámetros
+                preparedStatement.setInt(1, reserva.getCodigo());
+              
+
+                // Ejecutar la actualización
+                int filasAfectadas = preparedStatement.executeUpdate();
+                if (filasAfectadas > 0) {
+                    actualizacionExitosa = true;
+                }
+
+                return actualizacionExitosa;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return actualizacionExitosa;
+            }
+        }
    }    
      
      
