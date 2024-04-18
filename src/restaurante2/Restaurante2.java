@@ -15,6 +15,7 @@ public class Restaurante2 {
      */
     public static void main(String[] args) {
        Restaurante Restaurante = new Restaurante();
+       Restaurante.setDefaultLookAndFeelDecorated(true);
        Restaurante.setDefaultCloseOperation(Restaurante.EXIT_ON_CLOSE);
        Restaurante.setVisible(true);
     }
