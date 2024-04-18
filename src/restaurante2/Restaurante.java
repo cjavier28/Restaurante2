@@ -13,6 +13,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JComboBox;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -106,10 +108,14 @@ public class Restaurante extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(1033, 768));
         setResizable(false);
 
         jtxtNumeroDocumentoCliente1.setToolTipText("");
+        jtxtNumeroDocumentoCliente1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxtNumeroDocumentoCliente1KeyTyped(evt);
+            }
+        });
 
         jCancelarReserva.setBackground(new java.awt.Color(0, 0, 0));
         jCancelarReserva.setForeground(new java.awt.Color(255, 255, 255));
@@ -134,6 +140,11 @@ public class Restaurante extends javax.swing.JFrame {
                 jtxtNumeroContactoClienteActionPerformed(evt);
             }
         });
+        jtxtNumeroContactoCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxtNumeroContactoClienteKeyTyped(evt);
+            }
+        });
 
         jcodigoreserva.setEditable(false);
         jcodigoreserva.setToolTipText("");
@@ -141,6 +152,12 @@ public class Restaurante extends javax.swing.JFrame {
         jtxtNombreCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtxtNombreClienteActionPerformed(evt);
+            }
+        });
+
+        jtxtCantidadPersonas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxtCantidadPersonasKeyTyped(evt);
             }
         });
 
@@ -219,6 +236,11 @@ public class Restaurante extends javax.swing.JFrame {
         jLabel6.setText("Nombre Cliente");
 
         jLabel7.setText("Teléfono Cliente");
+        jLabel7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jLabel7KeyTyped(evt);
+            }
+        });
 
         jLabel8.setText("Correo Cliente");
 
@@ -460,6 +482,14 @@ public class Restaurante extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jGuardarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGuardarReservaActionPerformed
+          
+        Boolean seencontraronerrores = ValidarCampos();
+               
+        if(seencontraronerrores){
+         return;
+        }
+        
+        
         jModificarReserva.setEnabled(false);
         jCancelarReserva.setEnabled(false);
         jGuardarReserva.setEnabled(false);
@@ -480,7 +510,7 @@ public class Restaurante extends javax.swing.JFrame {
         reserva.setCorreoCliente(jtxtCorreoCliente.getText());
         reserva.setEstadoReserva((String) jComboBox1.getSelectedItem());
         reserva.setCantidadPersonas(Integer.parseInt(jtxtCantidadPersonas.getText()));
-
+        ValidarCampos();
         boolean respuesta = servicio.InsertarReserva(reserva);
         obj.setSharedVariable(servicio.ObtenerRegistrosRestaurante());
         List<Reserva> lstReserva = new ArrayList<>();
@@ -523,6 +553,13 @@ public class Restaurante extends javax.swing.JFrame {
 
 
     private void jModificarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jModificarReservaActionPerformed
+         Boolean seencontraronerrores = ValidarCampos();
+               
+        if(seencontraronerrores){
+         return;
+        }
+        
+        
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 
         // Convertir la fecha a un String
@@ -553,6 +590,31 @@ public class Restaurante extends javax.swing.JFrame {
     private void jtxtNombreClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtNombreClienteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtxtNombreClienteActionPerformed
+
+    private void jLabel7KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabel7KeyTyped
+       
+    }//GEN-LAST:event_jLabel7KeyTyped
+
+    private void jtxtNumeroContactoClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtNumeroContactoClienteKeyTyped
+         char c = evt.getKeyChar();
+                if (!(Character.isDigit(c) || (c == evt.VK_BACK_SPACE) || (c == evt.VK_DELETE))) {
+                    evt.consume();  // Ignorar la tecla si no es un número o una tecla de borrado
+                }
+    }//GEN-LAST:event_jtxtNumeroContactoClienteKeyTyped
+
+    private void jtxtNumeroDocumentoCliente1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtNumeroDocumentoCliente1KeyTyped
+           char c = evt.getKeyChar();
+                if (!(Character.isDigit(c) || (c == evt.VK_BACK_SPACE) || (c == evt.VK_DELETE))) {
+                    evt.consume();  // Ignorar la tecla si no es un número o una tecla de borrado
+                }
+    }//GEN-LAST:event_jtxtNumeroDocumentoCliente1KeyTyped
+
+    private void jtxtCantidadPersonasKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtCantidadPersonasKeyTyped
+              char c = evt.getKeyChar();
+                if (!(Character.isDigit(c) || (c == evt.VK_BACK_SPACE) || (c == evt.VK_DELETE))) {
+                    evt.consume();  // Ignorar la tecla si no es un número o una tecla de borrado
+                }
+    }//GEN-LAST:event_jtxtCantidadPersonasKeyTyped
 
     /**
      * @param args the command line arguments
@@ -586,8 +648,6 @@ public class Restaurante extends javax.swing.JFrame {
         jTable1.setModel(model);
 
     }
-
-    
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -630,7 +690,106 @@ public class Restaurante extends javax.swing.JFrame {
         }
         modeloTabla.setColumnCount(0);
     }
+    
+    public boolean ValidarCampos(){
+     Boolean respuesta = false;
+     SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 
+        // Convertir la fecha a un String
+        String fechaString = formato.format(jDateChooser1.getDate());
+        LocalDate localDate = LocalDate.parse(fechaString);
+        int  error =0;
+        if(jDateChooser1.getDate().toString().trim().isEmpty()){
+            error +=1;
+        }
+        
+        if(jtxtNombreCliente.getText().trim().isEmpty()){
+            error +=1;
+        }        
+       
+        if(jtxtNumeroContactoCliente.getText().trim().isEmpty()){
+            error +=1;
+        }
+        
+      if(jtxtNumeroDocumentoCliente1.getText().trim().isEmpty()){
+            error +=1;
+      }
+        
+     if(jtxtCorreoCliente.getText().trim().isEmpty()){
+            error +=1;
+     }
+        
+     if(jComboBox1.getSelectedItem().toString()=="Seleccione"){
+            error +=1;
+     }
+       
+     String cantidad = jtxtCantidadPersonas.getText();
+      if(cantidad.trim().isEmpty()){
+            error +=1;
+     }
+        
+      if(VerificarSiEsCorreo(jtxtCorreoCliente.getText())==false){
+       JOptionPane.showMessageDialog(null, "Correo no valido");      
+      }
+     if(VerificarSiEsTelefono(jtxtNumeroContactoCliente.getText())==false){
+       JOptionPane.showMessageDialog(null, "Número no valido");      
+      }
+    
+      
+      
+       if(error>0){
+           respuesta = true;
+          JOptionPane.showMessageDialog(null, "Validar los campos ingresados");
+       }
+     return respuesta;
+     
+    }
+    
+    public  boolean VerificarSiEsCorreo(String correo){
+       boolean respuesta = false;
+    // Patrón para validar un correo electrónico
+        String patronCorreo = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+
+        // Compilar el patrón en un objeto Pattern
+        Pattern pattern = Pattern.compile(patronCorreo);
+
+        // Crear un objeto Matcher
+        Matcher matcher = pattern.matcher(correo);
+
+        // Verificar si el correo coincide con el patrón
+        if (matcher.matches()) {
+           respuesta=true;
+        } else {
+            respuesta=false;
+        }
+      return respuesta;
+    }
+
+    
+    
+    public  boolean VerificarSiEsTelefono(String telefono){
+       boolean respuesta = false;
+    // Patrón para validar un correo electrónico
+      String patronCelular = "^[0-9]{10}$"; // Asumiendo que los números de celular tienen 10 dígitos
+
+        // Compilar el patrón en un objeto Pattern
+        Pattern pattern = Pattern.compile(patronCelular);
+
+        // Crear un objeto Matcher
+        Matcher matcher = pattern.matcher(telefono);
+
+        // Verificar si el número de celular coincide con el patrón
+         respuesta = matcher.matches();
+
+        // Verificar si el correo coincide con el patrón
+        if (matcher.matches()) {
+           respuesta=true;
+        } else {
+            respuesta=false;
+        }
+      return respuesta;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jCancelarReserva;
